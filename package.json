@@ -1,0 +1,41 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cli": "^1.0.1",
+    "firebase": "^5.10.1",
+    "gh-pages": "^2.0.1",
+    "qrcode.react": "^0.9.3",
+    "react": "^16.8.5",
+    "react-dnd": "^7.4.3",
+    "react-dnd-html5-backend": "^7.4.0",
+    "react-dom": "^16.8.5",
+    "react-qr-reader": "^2.2.1",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8",
+    "shortid": "^2.2.14"
+  },
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -b master -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yadrovGrigoriy/fs-diplom.git"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
