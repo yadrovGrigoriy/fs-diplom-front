@@ -20,7 +20,7 @@ class Auth extends Component {
         this.setState({
             isLoading:true
         })
-        axios.post('https://fs.h1n.ru/api/auth/login',{
+        axios.post(`${process.env.REACT_APP_API_URL}/auth/login`,{
                 client_id: this.state.clientId,
                 client_secret: this.state.clientSecret,
                 grant_type: 'password',
@@ -63,7 +63,7 @@ class Auth extends Component {
             })
         }
         
-        axios.get('https://fs.h1n.ru/api/oauth') 
+        axios.get(`${process.env.REACT_APP_API_URL}/oauth`) 
             .then(res=> {
                 this.setState({
                     clientId: res.data.client.id,

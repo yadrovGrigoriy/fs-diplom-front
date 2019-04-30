@@ -14,7 +14,7 @@ class Client extends Component{
     componentDidMount() {
         axios({
             method:'get',
-            url:'https://fs.h1n.ru/api/index',
+            url:`${process.env.REACT_APP_API_URL}/index`,
         })
         .then(res => {
             this.setState({
@@ -24,6 +24,7 @@ class Client extends Component{
         })
     }
     render(){
+        
         if(this.state.isLoading)return <Preloader/>
         return (
             <div className="client_body" >

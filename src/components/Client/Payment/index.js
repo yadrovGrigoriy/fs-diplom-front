@@ -18,7 +18,7 @@ class Payment extends Component {
     getCodeReserve = () => {
         axios({
             method:'post',
-            url:`https://fs.h1n.ru/api/updateTicket`,
+            url:`${process.env.REACT_APP_API_URL}/updateTicket`,
             data:{
                 id:this.state.ticketInfo.ticket.id,
                 qr_code: JSON.stringify({
@@ -29,7 +29,6 @@ class Payment extends Component {
             }
         })
         .then( res => {
-            console.log(res.data)
             this.setState({
                 ticketInfo:{...this.state.ticketInfo, ticket:res.data },
                 confirmPay:true
@@ -40,7 +39,7 @@ class Payment extends Component {
     }
 
     componentDidMount(){
-        axios.get(`https://fs.h1n.ru/api/getTicket?ticket_id=${this.props.match.params.id}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/getTicket?ticket_id=${this.props.match.params.id}`)
         .then(res=> {
             this.setState({
                 ticketInfo:res.data,

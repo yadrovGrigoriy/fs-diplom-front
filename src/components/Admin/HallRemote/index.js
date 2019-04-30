@@ -44,7 +44,7 @@ class HallRemote extends Component {
 
         axios({
             method:'post',
-            url:'https://fs.h1n.ru/api/deleteHall',
+            url:`${process.env.REACT_APP_API_URL}/deleteHall`,
             data:{id:this.state.currentHall.id},
             headers: {
                 Authorization:`${this.props.auth}`
@@ -81,7 +81,7 @@ class HallRemote extends Component {
         })
         axios({
             method:'post',
-            url:'https://fs.h1n.ru/api/createHall',
+            url:`${process.env.REACT_APP_API_URL}/createHall`,
             data:{name:hallName},
             headers: {
                 Authorization:`${this.props.auth}`

@@ -33,10 +33,7 @@ class MainHall extends Component {
         this.setState({
             isSubmiting:true
         })
-
-        console.log(this.state.seanceId,JSON.stringify(this.reservedChairs), this.totalPrice )
-        
-        axios.post('https://fs.h1n.ru/api/addTicket', {
+        axios.post(`${process.env.REACT_APP_API_URL}/addTicket`, {
                 seance_id: this.state.seanceId,
                 reserve: JSON.stringify(this.reservedChairs),
                 total_price: this.totalPrice,

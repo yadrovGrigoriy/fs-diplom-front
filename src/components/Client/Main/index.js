@@ -20,7 +20,7 @@ const Main = ({ films, halls, seances }) => {
             if(seances.find(seance =>  parseInt(seance.hall_id) === hall.id && parseInt(seance.film_id) === filmId)){
                 return(
                     <div className="movie-seances__hall" key={shortId.generate()}>
-                        <h3 className="movie-seances__hall-title">Зал { hall.name.toUpperCase() }</h3>
+                        <h3 className="movie-seances__hall-title">Зал { hall.name }</h3>
                         <ul className="movie-seances__list">
                             { renderSeances( filmId, hall.id) }
                         </ul>

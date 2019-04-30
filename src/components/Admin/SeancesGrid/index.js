@@ -10,6 +10,8 @@ import RemoveFilmModal from './RemoveFilmModal';
 import Buttons from '../HallConfig/Buttons';
 import SeancesOnTimeline from './SeancesOnTimeline';
 import { getRandomColor } from '../../misc';
+import Calendar from 'react-calendar';
+ 
 
 class SeancesGrid    extends  Component {
     constructor(props){
@@ -27,6 +29,8 @@ class SeancesGrid    extends  Component {
             removeSeanceId:null,
             removeFilmId:null,
             updateFilm:null,
+            currentDate:new Date(),
+            showCalendar:false,
             onDrop:{
                 hallId:'',
                 filmId:'',
@@ -51,7 +55,7 @@ class SeancesGrid    extends  Component {
         })
         axios({
             method:'post',
-            url:`https://fs.h1n.ru/api/${route}`,
+            url:`${process.env.REACT_APP_API_URL}/${route}`,
             data:{...newFilm},
             headers: {
                 Authorization:`${this.props.auth}`
@@ -75,7 +79,7 @@ class SeancesGrid    extends  Component {
         const dataToRemove = event.target.filmId.value;
         axios({
             method:'post',
-            url:'https://fs.h1n.ru/api/deleteFilm',
+            url:`${process.env.REACT_APP_API_URL}/deleteFilm`,
             data:{id:dataToRemove},
             headers: {
                 Authorization:`${this.props.auth}`
@@ -126,7 +130,7 @@ class SeancesGrid    extends  Component {
             .map(seance =>  seance.id);
         axios({
             method:'post',
-            url:'https://fs.h1n.ru/api/removeSeances',
+            url:`${process.env.REACT_APP_API_URL}/removeSeances`,
             data:{removeSeances:JSON.stringify(removeData)},
             headers: {
                 Authorization:`${this.props.auth}`
@@ -136,7 +140,7 @@ class SeancesGrid    extends  Component {
 
             axios({
                 method:'post',
-                url:'https://fs.h1n.ru/api/addSeances',
+                url:`${process.env.REACT_APP_API_URL}/addSeances`,
                 data:{seances:JSON.stringify(this.state.seancesToAdd)},
                 headers: {
                     Authorization:`${this.props.auth}`
@@ -167,11 +171,9 @@ class SeancesGrid    extends  Component {
 
     addSeanceHandler = (event) => {
         event.preventDefault();
-        const newSeance = {}
-        Array.from(event.target).forEach(field =>  newSeance[field.name] = field.value);
-        
-        
-        console.log(newSeance.time)
+        const newSeance = {};
+        Array.from(event.target).forEach(field => {console.log(field); return newSeance[field.name] = field.value});
+        newSeance.date = this.state.currentDate;
         newSeance.id = shortid.generate()
         const seances = this.state.seances
         const films = this.props.films
@@ -189,8 +191,6 @@ class SeancesGrid    extends  Component {
         const seancesFilteredByHall = seances.filter(seance => parseInt(seance.hall_id)  === parseInt(newSeance.hall_id));
         seancesFilteredByHall.sort((a,b) => parseInt(a.time) - parseInt(b.time))
         const newSeanceBegin = toMinuts(newSeance.time);
-        console.log(newSeanceBegin)
-        
         const foundSeance = seancesFilteredByHall.find(seance => {
             const film  = films.find(film => film.id === parseInt(seance.film_id));
             if(!film)return null;
@@ -232,10 +232,16 @@ class SeancesGrid    extends  Component {
         });
     }
 
-    cancel = () => {
+    cancel = (event) => {
+        event.preventDefault();
         this.setState({
-            seances:this.props.seance
-        })
+            seances:this.props.seances
+        });
+    }
+    handleChangeDate = (date) => {
+        console.log(date)
+        this.setState({currentDate:date, showCalendar:false})
+        
     }
     
   
@@ -260,7 +266,8 @@ class SeancesGrid    extends  Component {
                         cancel={this.activeModal}
                         onSubmit={this.submitFilm}
                         updateFilm={this.updateFilm}
-                    />}
+                    />
+                }
                 {
                     this.state.showAddSeanceModal
                     &&
@@ -292,10 +299,10 @@ class SeancesGrid    extends  Component {
                         cancel={this.activeModal}
                     />
                 }
-
+                {this.state.isSubmiting && <Preloader/>}
                
                 <div className="conf-step__wrapper">
-                {this.state.isSubmiting && <Preloader/>}
+                
                     <p className="conf-step__paragraph">
                         <button className="conf-step__button conf-step__button-accent" onClick={() => this.setState({showAddFilmModal:true})}>Добавить фильм</button>
                     </p>
@@ -319,6 +326,24 @@ class SeancesGrid    extends  Component {
                         }
                     </div>
                     <div className="conf-step__seances">
+                    <div style={{textAlign:'center'}}>
+                    <p className="conf-step__paragraph">
+                        <button className="conf-step__button conf-step__button-accent" onClick={() => this.setState({showCalendar:true})}>Выбрать дату</button>
+                    </p>
+                    {
+                        this.state.showCalendar && 
+                        <Calendar
+                            className="calendar"
+                            onChange={this.handleChangeDate}
+                            value={this.state.currentDate}
+                        />
+                    }
+                        <p className="conf-step__paragraph " style={{margin:'20px'}}>
+                          <strong>Расписание на</strong><br/>    {this.state.currentDate.toLocaleString('ru-RU',{weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                        </p>  
+                    </div>
+                   
+                        
                         {
                             this.props.halls.map(hall => (
                                     <div 

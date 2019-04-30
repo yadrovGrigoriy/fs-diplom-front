@@ -33,7 +33,7 @@ class PriceConfig extends Component {
         })
         axios({
             method:'post',
-            url:'https://fs.h1n.ru/api/updatePricesHall',
+            url:`${process.env.REACT_APP_API_URL}/updatePricesHall`,
             data:{
                 id:this.state.currentHall.id,
                 price: this.price.value,

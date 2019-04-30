@@ -63,7 +63,7 @@ class HallConfig extends Component {
         
         axios({
             method:'post',
-            url:'https://fs.h1n.ru/api/updateHall',
+            url:`${process.env.REACT_APP_API_URL}/updateHall`,
             data:{
                 id:this.state.currentHall.id,
                 rows:this.state.currentHall.rows,

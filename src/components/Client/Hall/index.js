@@ -15,9 +15,8 @@ class Hall extends Component {
     
     componentDidMount(){
         const seanceId = this.props.match.params.id
-        axios.get(`https://fs.h1n.ru/api/client/hall?seance_id=${seanceId}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/client/hall?seance_id=${seanceId}`)
         .then(res => {
-            console.log(res.data)
             this.setState({
                 data:res.data,
                 isLoading:false

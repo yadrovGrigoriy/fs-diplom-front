@@ -1470,6 +1470,15 @@ input[type='radio'], input[type='submit'], button, .conf-step__header {
   font-weight: 900;
   opacity: 1;
 }
+.calendar {
+  position: absolute;
+  left:20%;
+  top:55%;
+  width:60%;
+  font-size: 16px;
+  z-index: 1;
+  background-color: #fff;
+}
 
 
 /*=======================

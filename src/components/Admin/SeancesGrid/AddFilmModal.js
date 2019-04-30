@@ -1,7 +1,7 @@
 import React from 'react';
 
 const AddFilmModal = ({ onSubmit, cancel, formError, defaultValue }) => {
-    console.log(defaultValue)
+    
     return (
         <div className="form__wrapper">
              <form onSubmit={(event) => onSubmit(event, defaultValue? "updateFilm" : "addFilm") }>

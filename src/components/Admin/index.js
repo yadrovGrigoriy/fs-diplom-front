@@ -30,7 +30,7 @@ class Admin extends Component {
             this.auth = localStorage.getItem('token_type') + ' ' + localStorage.getItem('token') 
         }     
         
-        fetch('https://fs.h1n.ru/api/index')
+        fetch(`${process.env.REACT_APP_API_URL}/index`)
             .then(res=> res.json())
             .then(res=>{
                 this.setState({
@@ -41,7 +41,7 @@ class Admin extends Component {
     }
 
     logout = () => {
-        axios.get('https://fs.h1n.ru/api/auth/logout',{
+        axios.get(`${process.env.REACT_APP_API_URL}/auth/logout`,{
             headers: {Authorization:`${this.auth}`}
         })
         .then(res=>{
