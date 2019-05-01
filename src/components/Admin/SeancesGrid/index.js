@@ -10,7 +10,9 @@ import RemoveFilmModal from './RemoveFilmModal';
 import Buttons from '../HallConfig/Buttons';
 import SeancesOnTimeline from './SeancesOnTimeline';
 import { getRandomColor } from '../../misc';
-import Calendar from 'react-calendar';
+import HallsWithTimeline from './HallsWithTimeline';
+import CalendarView from './CalendarView';
+import FilmsList from './FilmsList';
  
 
 class SeancesGrid    extends  Component {
@@ -172,7 +174,7 @@ class SeancesGrid    extends  Component {
     addSeanceHandler = (event) => {
         event.preventDefault();
         const newSeance = {};
-        Array.from(event.target).forEach(field => {console.log(field); return newSeance[field.name] = field.value});
+        Array.from(event.target).forEach(field =>  newSeance[field.name] = field.value);
         newSeance.date = this.state.currentDate;
         newSeance.id = shortid.generate()
         const seances = this.state.seances
@@ -188,7 +190,10 @@ class SeancesGrid    extends  Component {
 
         // если время сеанса занято
     
-        const seancesFilteredByHall = seances.filter(seance => parseInt(seance.hall_id)  === parseInt(newSeance.hall_id));
+        const seancesFilteredByHall = seances.filter(seance => 
+            parseInt(seance.hall_id)  === parseInt(newSeance.hall_id)
+            && new Date(seance.date).getDate === this.state.currentDate.getDate()
+            );
         seancesFilteredByHall.sort((a,b) => parseInt(a.time) - parseInt(b.time))
         const newSeanceBegin = toMinuts(newSeance.time);
         const foundSeance = seancesFilteredByHall.find(seance => {
@@ -209,7 +214,6 @@ class SeancesGrid    extends  Component {
             return false
         } 
         
-        
         //если время сеанса свободно 
         
         const film = films.find(film => parseInt(newSeance.film_id) === parseInt(film.id)  );
@@ -223,7 +227,7 @@ class SeancesGrid    extends  Component {
             });
             return false
         }
-        
+        console.log(newSeance)
         this.setState({
             formError:'',
             seancesToAdd:[...this.state.seancesToAdd, newSeance],
@@ -239,12 +243,8 @@ class SeancesGrid    extends  Component {
         });
     }
     handleChangeDate = (date) => {
-        console.log(date)
         this.setState({currentDate:date, showCalendar:false})
-        
     }
-    
-  
 
     render() {
        const filmsColors = this.props.films.map(film => {
@@ -302,67 +302,53 @@ class SeancesGrid    extends  Component {
                 {this.state.isSubmiting && <Preloader/>}
                
                 <div className="conf-step__wrapper">
-                
                     <p className="conf-step__paragraph">
                         <button className="conf-step__button conf-step__button-accent" onClick={() => this.setState({showAddFilmModal:true})}>Добавить фильм</button>
                     </p>
+                    
                     <div className="conf-step__movies">
                         { 
                             this.props.films.map( (film, i) => (
-                                <div 
-                                    style={{backgroundColor:filmsColors[i].color}}
-                                    key={shortid.generate()} 
-                                    draggable 
-                                    className="conf-step__movie" 
-                                    onDragStart={(event) => this.dragStart(event, film, 'film')}
-                                >
+                                <FilmsList film={film} filmsColors={filmsColors} index={i} key={shortid.generate()}>
                                     <span className="edit_film " onClick={()=>this.setState({updateFilm:film, showAddFilmModal:true})}>Изменить</span>
                                     <span className="remove_film " onClick={() => this.setState({showRemoveFilmModal:true, removeFilmId:film.id})}>Удалить</span>
-                                    <img className="conf-step__movie-poster" alt={film.poster} src={require(`../../../images/client/${film.poster}`)}/>
-                                    <h3 className="conf-step__movie-title">{film.title}</h3>
-                                    <p className="conf-step__movie-duration">{film.duration} Минут</p>
-                                </div>
+                                </FilmsList>
+                                // <div 
+                                //     style={{backgroundColor:filmsColors[i].color}}
+                                //     key={shortid.generate()} 
+                                //     draggable 
+                                //     className="conf-step__movie" 
+                                //     onDragStart={(event) => this.dragStart(event, film, 'film')}
+                                // >
+                                //     <span className="edit_film " onClick={()=>this.setState({updateFilm:film, showAddFilmModal:true})}>Изменить</span>
+                                //     <span className="remove_film " onClick={() => this.setState({showRemoveFilmModal:true, removeFilmId:film.id})}>Удалить</span>
+                                //     <img className="conf-step__movie-poster" alt={film.poster} src={require(`../../../images/client/${film.poster}`)}/>
+                                //     <h3 className="conf-step__movie-title">{film.title}</h3>
+                                //     <p className="conf-step__movie-duration">{film.duration} Минут</p>
+                                // </div>
                             ))
                         }
                     </div>
                     <div className="conf-step__seances">
-                    <div style={{textAlign:'center'}}>
-                    <p className="conf-step__paragraph">
-                        <button className="conf-step__button conf-step__button-accent" onClick={() => this.setState({showCalendar:true})}>Выбрать дату</button>
-                    </p>
-                    {
-                        this.state.showCalendar && 
-                        <Calendar
-                            className="calendar"
+                        <CalendarView 
+                            activeModal={this.activeModal} 
                             onChange={this.handleChangeDate}
-                            value={this.state.currentDate}
+                            isActive={this.state.showCalendar} 
+                            currentDate={this.state.currentDate}
                         />
-                    }
-                        <p className="conf-step__paragraph " style={{margin:'20px'}}>
-                          <strong>Расписание на</strong><br/>    {this.state.currentDate.toLocaleString('ru-RU',{weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                        </p>  
-                    </div>
-                   
-                        
+                    
                         {
                             this.props.halls.map(hall => (
-                                    <div 
-                                        key={shortid.generate()} 
-                                        className="conf-step__seances-hall"
-                                        data-key={hall.id}  
-                                        onDragOver={(event) => event.preventDefault()}
-                                        onDrop={(event) => this.onDrop(event, hall.id) }
-                                    >
-                                        <h3 className="conf-step__seances-title">Зал {hall.name}</h3>
-                                        <div className="conf-step__seances-timeline">
-                                           <SeancesOnTimeline 
+                                <HallsWithTimeline key={shortid.generate()} hall={hall} onDrop={this.onDrop}>
+                                    <SeancesOnTimeline 
                                                filmsColors={filmsColors}  
                                                seancesList={this.state.seances} 
                                                films={this.props.films} 
                                                hallId={hall.id} 
-                                               dragStart={this.dragStart}/>
-                                        </div>
-                                    </div>
+                                               dragStart={this.dragStart}
+                                               currentDate={this.state.currentDate}
+                                    />
+                                </HallsWithTimeline>
                             ))
                         }
                         <Buttons  cancel={this.cancel} onSave={this.updateSeancesTimeline} />

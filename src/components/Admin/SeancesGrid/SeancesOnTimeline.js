@@ -1,9 +1,13 @@
 import React from 'react';
 import shortid from 'shortid';
 
-const SeancesOnTimeline = ({ seancesList, hallId, films, dragStart, filmsColors }) => {
+const SeancesOnTimeline = ({ seancesList, hallId, films, dragStart, filmsColors, currentDate }) => {
 
-    const list = seancesList.filter( seance => parseInt(seance.hall_id) === parseInt(hallId));
+    const list = seancesList.filter( seance =>
+         parseInt(seance.hall_id) === parseInt(hallId) 
+         && new Date(seance.date).getDate() === currentDate.getDate() 
+         && new Date(seance.date).getMonth() === currentDate.getMonth()
+    );
     const seancePosition = (start, duration) => {
         const positionStart = start.split(':').reduce( (hour, min) => (hour * 60 + parseInt(min))*0.5);
         const positionEnd = positionStart + duration;

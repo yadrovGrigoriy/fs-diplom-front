@@ -4,13 +4,21 @@ import Main from './Main';
 import Header from '../Header';
 import Preloader from './Preloader';
 import axios from 'axios';
+import { currentWeekFill } from '../misc';
+
 
 class Client extends Component{
-    state = {
-        data:null,
-        isLoading:true
+    constructor(){
+        super();
+        this.currentWeek = currentWeekFill();
+        this. state = {
+            data:'',
+            currentDate:this.currentWeek.find(day => day.getDate() === new Date().getDate()),
+            isLoading:true
+        }
     }
-
+   
+    
     componentDidMount() {
         axios({
             method:'get',
@@ -23,6 +31,12 @@ class Client extends Component{
             })
         })
     }
+    selectDay = (event, currentDate) => {
+        event.preventDefault();
+        this.setState({
+            currentDate
+       })
+    }
     render(){
         
         if(this.state.isLoading)return <Preloader/>
@@ -30,8 +44,8 @@ class Client extends Component{
             <div className="client_body" >
                 <div  >
                     <Header />
-                    <Nav />
-                    <Main {...this.state.data} />
+                    <Nav selectDay={this.selectDay} date={this.state.currentDate} week={this.currentWeek}/>
+                    <Main {...this.state.data} date={this.state.currentDate}/>
                 </div>
             </div>
         );

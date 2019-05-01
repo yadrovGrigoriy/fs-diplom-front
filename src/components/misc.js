@@ -6,11 +6,6 @@
 export const uniqueArrValue = (value, index, self) => { 
     return self.indexOf(value) === index;
 }
-export const scrollHeight = Math.max(
-        window.scrollHeight, window.scrollHeight,
-        window.offsetHeight, window.offsetHeight,
-        window.clientHeight, window.clientHeight
-    );
 
 export  const getRandomColor = () => {
         const  letters = '0123456789ABCDEF';
@@ -28,6 +23,19 @@ export  const reserveParse = (reserve) => {
         row:reservedRow,
         chairs:reservedChairs
     }
+}
+
+export const  currentWeekFill = () => {
+    const week = [];
+    const day = new Date();
+    day.setDate(day.getDate() - day.getDay() )  
+    
+    for(let i = 0; i < 7; i++){
+        day.setDate(day.getDate() + 1 )
+        week[i] =  new Date(day)
+    }
+    
+    return week
 }
 
  

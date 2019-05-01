@@ -1,4 +1,5 @@
 import React from 'react';
+import shortid from 'shortid'
 
 const HallsWithTimeline = (props) => {
     return (
@@ -7,9 +8,9 @@ const HallsWithTimeline = (props) => {
         className="conf-step__seances-hall"
         
         onDragOver={(event) => event.preventDefault()}
-        onDrop={(event) => this.onDrop(event, hall.id) }
+        onDrop={(event) => props.onDrop(event,props.hall.id) }
     >
-        <h3 className="conf-step__seances-title">Зал {hall.name}</h3>
+        <h3 className="conf-step__seances-title">Зал {props.hall.name}</h3>
         <div className="conf-step__seances-timeline">
           {props.children}
         </div>
