@@ -11,8 +11,8 @@ class Client extends Component{
     constructor(){
         super();
         this.currentWeek = currentWeekFill();
-        this. state = {
-            data:'',
+        this.state = {
+            data:[],
             currentDate:this.currentWeek.find(day => day.getDate() === new Date().getDate()),
             isLoading:true
         }
@@ -38,7 +38,7 @@ class Client extends Component{
        })
     }
     render(){
-        
+        console.log(this.state.currentDate)
         if(this.state.isLoading)return <Preloader/>
         return (
             <div className="client_body" >

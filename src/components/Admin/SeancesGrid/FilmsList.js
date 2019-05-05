@@ -1,12 +1,12 @@
 import React from 'react';
 
-const FilmsList = ( {filmsColors, film, index, ...props  }) => {
+const FilmsList = ( {filmsColors, film, dragStart, index, ...props  }) => {
     return (
         <div 
             style={{backgroundColor:filmsColors[index].color}}
             draggable 
             className="conf-step__movie" 
-            onDragStart={(event) => this.dragStart(event, film, 'film')}
+            onDragStart={(event) => dragStart(event, film, 'film')}
         >
             {props.children}
             <img className="conf-step__movie-poster" alt={film.poster} src={require(`../../../images/client/${film.poster}`)}/>

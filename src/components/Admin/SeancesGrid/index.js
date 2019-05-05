@@ -34,9 +34,8 @@ class SeancesGrid    extends  Component {
             currentDate:new Date(),
             showCalendar:false,
             onDrop:{
-                hallId:'',
-                filmId:'',
-                bgc:''
+                hallId:null,
+                filmId:null,
             }
         }
     }
@@ -174,7 +173,7 @@ class SeancesGrid    extends  Component {
     addSeanceHandler = (event) => {
         event.preventDefault();
         const newSeance = {};
-        Array.from(event.target).forEach(field =>  newSeance[field.name] = field.value);
+        Array.from(event.target).forEach(field => newSeance[field.name] = field.value);
         newSeance.date = this.state.currentDate;
         newSeance.id = shortid.generate()
         const seances = this.state.seances
@@ -192,7 +191,7 @@ class SeancesGrid    extends  Component {
     
         const seancesFilteredByHall = seances.filter(seance => 
             parseInt(seance.hall_id)  === parseInt(newSeance.hall_id)
-            && new Date(seance.date).getDate === this.state.currentDate.getDate()
+            && new Date(seance.date).getDate() === this.state.currentDate.getDate()
             );
         seancesFilteredByHall.sort((a,b) => parseInt(a.time) - parseInt(b.time))
         const newSeanceBegin = toMinuts(newSeance.time);
@@ -227,7 +226,7 @@ class SeancesGrid    extends  Component {
             });
             return false
         }
-        console.log(newSeance)
+        
         this.setState({
             formError:'',
             seancesToAdd:[...this.state.seancesToAdd, newSeance],
@@ -309,7 +308,7 @@ class SeancesGrid    extends  Component {
                     <div className="conf-step__movies">
                         { 
                             this.props.films.map( (film, i) => (
-                                <FilmsList film={film} filmsColors={filmsColors} index={i} key={shortid.generate()}>
+                                <FilmsList film={film} filmsColors={filmsColors} index={i} key={shortid.generate()} dragStart={this.dragStart}>
                                     <span className="edit_film " onClick={()=>this.setState({updateFilm:film, showAddFilmModal:true})}>Изменить</span>
                                     <span className="remove_film " onClick={() => this.setState({showRemoveFilmModal:true, removeFilmId:film.id})}>Удалить</span>
                                 </FilmsList>

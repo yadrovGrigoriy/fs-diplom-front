@@ -17,7 +17,8 @@ class NavItem extends Component {
                     <span className="page-nav__day-number">{ day.getDate() }</span>
                 </Link>
             )
-        } else if( day.getDay() === 6 || day.getDay() === 0) {
+            
+        } else if( day.getDay() === 6 || day.getDay() === 0 ) {
             return(
                 <Link 
                     className={this.props.isActive? "page-nav__day page-nav__day_weekend page-nav__day_chosen" : "page-nav__day page-nav__day_weekend"} 

@@ -4,12 +4,13 @@ import FilmView from './FilmView';
 import shortId from 'shortid';
 
 
-const Main = ({ films, halls, seances, ...props }) => {
+const Main = ({ films, halls, seances, date }) => {
+    console.log(date)
     
     const seancesByDate = seances.filter(seance => 
-        new Date(seance.date).getDate() === props.date.getDate() 
+        new Date(seance.date).getDate() === date.getDate() 
         &&
-        new Date(seance.date).getMonth() === props.date.getMonth()
+        new Date(seance.date).getMonth() === date.getMonth()
     ).sort((a,b) => parseInt(a.time) - parseInt(b.time))
 
     const renderSeances = (filmId, hallId) => {

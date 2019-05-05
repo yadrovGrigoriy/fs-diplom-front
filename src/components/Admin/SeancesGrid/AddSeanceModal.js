@@ -21,8 +21,6 @@ const AddSeanceModal = ({ halls, onSubmit, cancel, formError, onDrop }) => {
                         <input  className="form__input"  type="hidden" name="film_id" value={onDrop.filmId}/>
                 </div>
                 
-                
-                
                 {formError && <p className="form_error">Ошибка: {formError}</p>}
 
                 <button className="conf-step__button conf-step__button-accent" type="submit">Добавить</button>

@@ -28,8 +28,11 @@ export  const reserveParse = (reserve) => {
 export const  currentWeekFill = () => {
     const week = [];
     const day = new Date();
-    day.setDate(day.getDate() - day.getDay() )  
-    
+    if(day.getDay() === 0) {
+        day.setDate(day.getDate() - 7)
+    } else {
+        day.setDate(day.getDate() - day.getDay() )  
+    } 
     for(let i = 0; i < 7; i++){
         day.setDate(day.getDate() + 1 )
         week[i] =  new Date(day)
