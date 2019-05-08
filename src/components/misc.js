@@ -41,4 +41,8 @@ export const  currentWeekFill = () => {
     return week
 }
 
+export const toMinuts = (stringTime) => {
+    return stringTime.split(':').reduce( (hour, min) => (hour * 60 + parseInt(min))*0.5)
+ }
+
  

@@ -10,9 +10,11 @@ import RemoveFilmModal from './RemoveFilmModal';
 import Buttons from '../HallConfig/Buttons';
 import SeancesOnTimeline from './SeancesOnTimeline';
 import { getRandomColor } from '../../misc';
+import { toMinuts } from '../../misc';
 import HallsWithTimeline from './HallsWithTimeline';
 import CalendarView from './CalendarView';
 import FilmsList from './FilmsList';
+
  
 
 class SeancesGrid    extends  Component {
@@ -312,19 +314,6 @@ class SeancesGrid    extends  Component {
                                     <span className="edit_film " onClick={()=>this.setState({updateFilm:film, showAddFilmModal:true})}>Изменить</span>
                                     <span className="remove_film " onClick={() => this.setState({showRemoveFilmModal:true, removeFilmId:film.id})}>Удалить</span>
                                 </FilmsList>
-                                // <div 
-                                //     style={{backgroundColor:filmsColors[i].color}}
-                                //     key={shortid.generate()} 
-                                //     draggable 
-                                //     className="conf-step__movie" 
-                                //     onDragStart={(event) => this.dragStart(event, film, 'film')}
-                                // >
-                                //     <span className="edit_film " onClick={()=>this.setState({updateFilm:film, showAddFilmModal:true})}>Изменить</span>
-                                //     <span className="remove_film " onClick={() => this.setState({showRemoveFilmModal:true, removeFilmId:film.id})}>Удалить</span>
-                                //     <img className="conf-step__movie-poster" alt={film.poster} src={require(`../../../images/client/${film.poster}`)}/>
-                                //     <h3 className="conf-step__movie-title">{film.title}</h3>
-                                //     <p className="conf-step__movie-duration">{film.duration} Минут</p>
-                                // </div>
                             ))
                         }
                     </div>
@@ -361,9 +350,7 @@ class SeancesGrid    extends  Component {
 
 export default SeancesGrid;
 
-function toMinuts(stringTime){
-    return stringTime.split(':').reduce( (hour, min) => (hour * 60 + parseInt(min))*0.5)
- }
+
  
 
 

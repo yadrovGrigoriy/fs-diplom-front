@@ -9,12 +9,11 @@ import OpenSale from './OpenSale';
 import axios from 'axios'
 
 
-
-
 class Admin extends Component {
     constructor(){
         super()
         this.auth = ''
+        this.timer=10000
         this.state = {
             data: [],
             isLoading:true,
@@ -38,6 +37,11 @@ class Admin extends Component {
                     isLoading:false
                 })
             })
+
+        // let autoLogout = setTimeout(this.logout, 10000)
+        // const resetTimer = ( ) => {
+            
+        // }   
     }
 
     logout = () => {
@@ -57,6 +61,7 @@ class Admin extends Component {
             data:{...this.state.data, ...newData}
         })
     }
+    
 
     render() {
         document.body.style.backgroundImage='url(../../../../images/admin/background.jpg)'
@@ -72,7 +77,7 @@ class Admin extends Component {
                         <HallConfig {...this.state.data} updateData={this.updateData} auth={this.auth}/>
                         <PriceConfig {...this.state.data} updateData={this.updateData} auth={this.auth} />
                         <SeancesGrid {...this.state.data} updateData={this.updateData} auth={this.auth} />         
-                        <OpenSale/>
+                        <OpenSale {...this.state.data}/>
                     </main>
                 </div>
             );
